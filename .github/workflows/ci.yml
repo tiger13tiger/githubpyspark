@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: 安装依赖
+        run: |
+          python -m pip install -U pip "setuptools<81" wheel
+          pip install --no-build-isolation pyspark chispa pytest
+
+      - name: 生成样本数据
+        run: python scripts/gen_seed_data.py
+
+      - name: 参考实现回归测试
+        run: pytest -q tests/test_pipeline_layers.py
+
+      # 参考答案必须始终通过；你自己的 exercises/ 实现在本地跑，
+      # 不卡 CI（否则刚 clone 下来主分支就是红的）。
+      - name: 参考答案测试
+        env:
+          SOLUTIONS: "1"
+        run: pytest -q
+
+      - name: 端到端流水线
+        run: PYTHONPATH=src python -m taxilake.pipeline

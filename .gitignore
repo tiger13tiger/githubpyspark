@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+
+# 数据湖产物与下载的原始数据：绝不提交
+data/raw/
+data/lake/
+data/*.parquet
+spark-warehouse/
+metastore_db/
+derby.log

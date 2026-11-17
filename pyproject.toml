@@ -1,0 +1,18 @@
+[project]
+name = "taxilake"
+version = "0.1.0"
+description = "PySpark 练习 + NYC 出租车数据湖仓项目"
+requires-python = ">=3.10"
+dependencies = ["pyspark>=4.0", "chispa>=0.10", "pytest>=8.0"]
+
+[build-system]
+requires = ["setuptools<81", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "."]
+filterwarnings = ["ignore::DeprecationWarning"]
